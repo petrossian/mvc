@@ -2,6 +2,8 @@
 
 namespace vendor\core;
 
+use Exception;
+
 class Router{
 
     public $routes = [];
@@ -22,19 +24,27 @@ class Router{
         foreach($this->routes as $key => $value){
             if($url === $key){
                 $this->route = $value;
-                $this->dispatcher($this->route);
+                return true;
             }
         }
+        return false;
     }
 
-    public function dispatcher($route = []){
-        $controller =  '../../app/controllers/'.$route['controller']  . 'Controller.php';
-        var_dump( $controller);
-        die;
-        require $controller;
-        new $controller();          
+    public function dispatcher(){
+        $controller_path =  ROOT . '/app/controllers/' . $this->route['controller'];
+        require $controller_path . '.php';
+        $controller = $this->route['controller'];
+        if(class_exists($controller)){
+            $c_obj = new $controller();  
+            $action = $this->route['action'];
+            if(method_exists($c_obj, $action)){
+                $c_obj->$action();
+            }else{
+                echo "false route [action]";
+            }
+        }else{
+            echo "false route [controller]";
+        }
     }
-
-    
 
 }

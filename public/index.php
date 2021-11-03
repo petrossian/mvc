@@ -3,7 +3,9 @@
 use vendor\core\Router;
 require '../vendor/functions.php';
 
-$url = $_SERVER['QUERY_STRING'];
+define('ROOT', dirname(__DIR__));
+
+$url = rtrim($_SERVER['QUERY_STRING'], '/');
 
 spl_autoload_register(function ($class) {
     $file = dirname(__DIR__). '/' . str_replace('\\', '/', $class) . '.php';
@@ -18,9 +20,10 @@ $router->add('', ['controller'=>'Main', 'action'=>'index']);
 $router->add('posts/new', ['controller'=>'Posts', 'action'=>'new']);
 
 
-$router->compare($url);
+if($router->compare($url)){
+    $router->dispatcher();
+}else{
+    echo '404';
+}
 
-debug($router->getRoute());
-echo "<hr/>";
-debug($router->getRoutes());
-echo "<hr/>";
+
