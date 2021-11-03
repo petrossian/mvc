@@ -32,7 +32,7 @@ class Router{
         var_dump( $controller);
         die;
         require $controller;
-        new $controller();
+        new $controller(); 
     }
 
 }
