@@ -39,6 +39,7 @@ class Router{
             $action = $this->route['action'];
             if(method_exists($c_obj, $action)){
                 $c_obj->$action();
+                $c_obj->getView($this->route);
             }else{
                 echo "false route [action]";
             }

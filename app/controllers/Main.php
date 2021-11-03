@@ -1,13 +1,11 @@
 <?php
 
-class Main{
+use vendor\core\base\BaseController;
 
-    public function __construct(){
-        echo "<br/>Main CONSTRUCT<br/>";
-    }
+class Main extends BaseController{
 
     public function index(){
-        echo "<br/>Main index()<br/>";
+        
     }
 
 }

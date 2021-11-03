@@ -1,17 +1,15 @@
 <?php
 
-class Posts{
+use vendor\core\base\BaseController;
 
-    public function __construct(){
-        echo "<br/>POSTS CONSTRUCT<br/>";
-    }
+class Posts extends BaseController{
 
     public function index(){
-        echo "<br/>Posts index()<br/>";
+        
     }
 
     public function new(){
-        echo "<br/>Posts new()<br/>";
+        $this->setData(['name'=>'Arshak', 'id'=>1]);
     }
 
 }
