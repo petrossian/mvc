@@ -36,7 +36,7 @@ class Router{
         $controller = $this->route['controller'];
         if(class_exists($controller)){
             $c_obj = new $controller();  
-            $action = $this->route['action'];
+            $action = $this->lowerCamelCase($this->route['action']);
             if(method_exists($c_obj, $action)){
                 $c_obj->$action();
                 $c_obj->getView($this->route);
@@ -46,6 +46,10 @@ class Router{
         }else{
             echo "false route [controller]";
         }
+    }
+
+    protected function lowerCamelCase($action){
+        return $action = lcfirst(str_replace(' ', '', ucwords(str_replace('-', ' ', $action))));
     }
 
 }

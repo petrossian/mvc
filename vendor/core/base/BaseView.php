@@ -17,7 +17,6 @@ class BaseView{
     public function render($data){
 
         $view = ROOT . '/app/views/' . $this->controller . '/' . $this->view . '.php';
-
         ob_start();
         if(is_file($view)){
             require $view;
