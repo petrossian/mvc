@@ -7,15 +7,17 @@ class BaseView{
     public $view = "";
     public $layout = "";
     public $controller = "";
+    public $alias = "";
 
-    public function __construct($view = "", $layout = "", $controller = ""){
+    public function __construct($view = "", $layout = "", $controller = "", $alias = ""){
         $this->view = $view;
         $this->layout = $layout;
         $this->controller = $controller;
+        $this->alias = $alias;
     }
    
     public function render($data){
-
+        
         $view = ROOT . '/app/views/' . $this->controller . '/' . $this->view . '.php';
         ob_start();
         if(is_file($view)){

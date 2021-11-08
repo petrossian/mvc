@@ -8,9 +8,20 @@ class Router{
 
     public $routes = [];
     public $route = [];
+    public $currentKey;
 
     public function add($key, $route){
+        $this->currentKey = $key;
         $this->routes[$key] = $route;
+
+        return $this;
+    }
+
+    public function match($regexp) {
+        $this->routes[$this->currentKey]['match'] = $regexp;
+
+        $this->currentKey = null;
+        return $this;
     }
 
     public function getRoute(){
@@ -22,11 +33,28 @@ class Router{
 
     public function compare($url){
         foreach($this->routes as $key => $value){
-            if($url === $key){
+            if(preg_match("~$key~", $url, $matches)){
                 $this->route = $value;
+                if(isset($matches['alias'])){
+                    $this->route['alias'] = $matches['alias'];
+                }else{
+                    $this->route['alias'] = "";
+                }
+                
                 return true;
             }
         }
+        // foreach($this->routes as $key => $value){
+        //     if(isset($value['match'])){
+        //         debug($key);
+        //         debug($value['match']);
+        //         if(preg_match($key, $url, $matches)){
+        //             $this->route = $value;
+        //             debug($matches);
+        //             return true;
+        //         }
+        //     }
+        // }
         return false;
     }
 
