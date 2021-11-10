@@ -32,7 +32,7 @@ class UserModel extends BaseModel{
         }
     }
     public function getUserData($email="", $password="", $alias=""){
-        $sql = "SELECT * FROM users WHERE (email = '$email' AND password = '$password') OR id=$alias";
+        $sql = "SELECT * FROM users WHERE (email = '$email' AND password = '$password') OR id = '$alias'";
         $stmt = $this->pdo->pdo->prepare($sql);
         $row = $stmt->execute();
         if ($stmt->rowCount() === 1){
@@ -58,11 +58,21 @@ class UserModel extends BaseModel{
         $sql = "SELECT * FROM uploads WHERE user_id = $user_id AND role = 'profile_image'";
         $stmt = $this->pdo->pdo->prepare($sql);
         $row = $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        if($stmt->rowCount() !== 0){
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        }
+        return "no-image";
     }
 
     public function getPosts(){
-        $sql = "SELECT posts.id, posts.user_id, uploads.file, users.name, password, title, body, uploads.role FROM posts inner JOIN users ON posts.user_id = users.id left JOIN uploads ON uploads.role='profile_image' AND uploads.user_id = users.id";
+        $sql = "SELECT posts.id, posts.user_id, uploads.file, users.name, password, title, body, uploads.role FROM posts inner JOIN users ON posts.user_id = users.id left JOIN uploads ON uploads.role='profile_image' AND uploads.user_id = users.id ORDER BY posts.id";
+        $stmt = $this->pdo->pdo->prepare($sql);
+        $row = $stmt->execute();
+        return $posts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getUsersPosts($user_id){
+        $sql = "SELECT posts.id, posts.user_id, uploads.file, users.name, password, title, body, uploads.role FROM posts inner JOIN users ON posts.user_id = '$user_id' and posts.user_id = users.id left JOIN uploads ON uploads.role='profile_image' AND uploads.user_id = users.id";
         $stmt = $this->pdo->pdo->prepare($sql);
         $row = $stmt->execute();
         return $posts = $stmt->fetchAll(PDO::FETCH_ASSOC);

@@ -3,6 +3,7 @@
 namespace vendor\core;
 
 use Exception;
+use vendor\core\ErrorHandler;
 
 class Router{
 
@@ -59,11 +60,14 @@ class Router{
     }
 
     public function dispatcher(){
+        
+        ErrorHandler::getRoute($this->route);
+
         $controller_path =  ROOT . '/app/controllers/' . $this->route['controller'];
         require $controller_path . '.php';
         $controller = $this->route['controller'];
         if(class_exists($controller)){
-            $c_obj = new $controller();  
+            $c_obj = new $controller($this->route);  
             $action = $this->lowerCamelCase($this->route['action']);
             if(method_exists($c_obj, $action)){
                 $c_obj->$action();

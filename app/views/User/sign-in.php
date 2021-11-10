@@ -1,3 +1,4 @@
+
 <style>
     input{
         color: grey !important;
@@ -23,6 +24,18 @@
 </style>
 <form action="/mvc/user/do-sign-in" method="post" id="sign_in_form" class="p-5 col-10 offset-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
     <fieldset>
+        <?php
+            if(isset($_SESSION['error'])){
+                ?>
+                    <div class="errors">
+                        <p class="alert alert-danger">
+                            <i class="fa fa-exclamation-triangle"></i>&nbsp;    
+                            <?=isset($_SESSION['error']) ? $_SESSION['error'] : "it is ok" ?>
+                        </p>
+                    </div>
+                <?php
+            }
+        ?>
         <legend class="pb-3">Sign In</legend>
         <input type="text" name="eml" placeholder="Email" class="form-control"><br>
         <input type="text" name="pwd" placeholder="Password" class="form-control"><br>

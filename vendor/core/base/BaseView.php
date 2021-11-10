@@ -8,16 +8,18 @@ class BaseView{
     public $layout = "";
     public $controller = "";
     public $alias = "";
+    public $title = "";
+    public $data = [];
 
-    public function __construct($view = "", $layout = "", $controller = "", $alias = ""){
+    public function __construct($view = "", $layout = "", $controller = "", $alias = "", $title = "", $errors){
         $this->view = $view;
         $this->layout = $layout;
         $this->controller = $controller;
         $this->alias = $alias;
+        $this->title = $title;
     }
    
     public function render($data){
-        
         $view = ROOT . '/app/views/' . $this->controller . '/' . $this->view . '.php';
         ob_start();
         if(is_file($view)){
